@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\..\common.props" />
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="7.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BeniceSoft.Abp.Core\BeniceSoft.Abp.Core.csproj" />
+      <ProjectReference Include="..\BeniceSoft.Abp.Extensions.DistributedLock.Abstractions\BeniceSoft.Abp.Extensions.DistributedLock.Abstractions.csproj" />
+      <ProjectReference Include="..\BeniceSoft.Abp.Extensions.DynamicQuery.Abstractions\BeniceSoft.Abp.Extensions.DynamicQuery.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\..\common.props" />
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BeniceSoft.Abp.Extensions.DynamicQuery.Abstractions\BeniceSoft.Abp.Extensions.DynamicQuery.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SqlKata" Version="3.0.0-beta" />
+      <PackageReference Include="Volo.Abp.Core" Version="7.0.1" />
+    </ItemGroup>
+
+</Project>

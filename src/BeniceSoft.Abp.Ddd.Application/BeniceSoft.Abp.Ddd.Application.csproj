@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\..\common.props" />
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BeniceSoft.Abp.Ddd.Application.Contracts\BeniceSoft.Abp.Ddd.Application.Contracts.csproj" />
+      <ProjectReference Include="..\BeniceSoft.Abp.Ddd.Domain\BeniceSoft.Abp.Ddd.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Volo.Abp.Ddd.Application" Version="7.0.1" />
+    </ItemGroup>
+
+</Project>

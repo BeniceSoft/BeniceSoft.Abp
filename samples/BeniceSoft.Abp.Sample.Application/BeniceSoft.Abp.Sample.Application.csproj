@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BeniceSoft.Abp.Ddd.Application\BeniceSoft.Abp.Ddd.Application.csproj" />
+    <ProjectReference Include="..\..\src\BeniceSoft.Abp.OperationLogging\BeniceSoft.Abp.OperationLogging.csproj" />
+    <ProjectReference Include="..\BeniceSoft.Abp.Sample.Application.Contracts\BeniceSoft.Abp.Sample.Application.Contracts.csproj" />
+    <ProjectReference Include="..\BeniceSoft.Abp.Sample.Domain\BeniceSoft.Abp.Sample.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

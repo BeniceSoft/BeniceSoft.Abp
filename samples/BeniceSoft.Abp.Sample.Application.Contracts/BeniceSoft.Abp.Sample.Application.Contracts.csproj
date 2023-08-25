@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BeniceSoft.Abp.Ddd.Application.Contracts\BeniceSoft.Abp.Ddd.Application.Contracts.csproj" />
+    <ProjectReference Include="..\BeniceSoft.Abp.Sample.Domain.Shared\BeniceSoft.Abp.Sample.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
