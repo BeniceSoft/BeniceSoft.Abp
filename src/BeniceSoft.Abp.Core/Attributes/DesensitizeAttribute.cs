@@ -5,7 +5,7 @@ namespace BeniceSoft.Abp.Core.Attributes;
 /// <summary>
 /// 数据脱敏
 /// </summary>
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property)]
 public class DesensitizeAttribute : Attribute
 {
     /// <summary>
@@ -27,8 +27,6 @@ public class DesensitizeAttribute : Attribute
     /// 掩码
     /// </summary>
     public char Mask { get; set; } = '*';
-    
-    
 }
 
 public enum DesensitizeType : byte

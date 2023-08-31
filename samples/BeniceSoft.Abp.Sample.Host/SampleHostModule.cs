@@ -20,7 +20,7 @@ namespace BeniceSoft.Abp.Sample.Host;
 
 [DependsOn(
     typeof(BeniceSoftAbpAspNetCoreModule),
-    typeof(AbpEventBusRabbitMqModule),
+    // typeof(AbpEventBusRabbitMqModule),
     typeof(AbpAutofacModule),
     typeof(SampleApplicationModule),
     typeof(SampleEntityFrameworkCoreModule),

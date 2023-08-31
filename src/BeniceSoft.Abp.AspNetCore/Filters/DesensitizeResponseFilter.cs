@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
@@ -30,12 +31,38 @@ public class DesensitizeResponseFilter : IActionFilter, ITransientDependency
     private static object Desensitize(object data)
     {
         var dataType = data.GetType();
-        var dataProperties = CachedPropertyInfosMap.GetOrAdd(dataType, type => type.GetProperties()
-            .Where(x => x.GetCustomAttribute<DesensitizeAttribute>() is not null)
-            .ToArray());
-        foreach (var property in dataProperties)
+        // if data type is simple type; eg: string, int, boolean etc. skip handle
+        if (!dataType.IsClass) return data;
+
+        // only handle nested type; eg: custom class, IEnumerable<>, etc.
+        // data is IEnumerable<T>
+        if (dataType.IsAssignableTo(typeof(IEnumerable)) && dataType.IsGenericType)
         {
-            DesensitizeProperty(data, property);
+            foreach (var item in (IEnumerable)data)
+            {
+                Desensitize(item);
+            }
+        }
+        // data is other type
+        else
+        {
+            var dataProperties = CachedPropertyInfosMap.GetOrAdd(dataType, type => type.GetProperties()
+                .ToArray());
+            foreach (var property in dataProperties)
+            {
+                // 只有字符串属性才行
+                if (property.GetCustomAttribute<DesensitizeAttribute>() is not null &&
+                    property.PropertyType == typeof(string))
+                {
+                    DesensitizeProperty(data, property);
+                }
+                else if(property.PropertyType != typeof(string))
+                {
+                    var propertyValue = property.GetValue(data);
+                    if(propertyValue is null) continue;
+                    Desensitize(propertyValue);
+                }
+            }
         }
 
         return data;
@@ -43,25 +70,13 @@ public class DesensitizeResponseFilter : IActionFilter, ITransientDependency
 
     private static void DesensitizeProperty(object data, PropertyInfo propertyInfo)
     {
+        if (!propertyInfo.CanWrite) return;
+
         var desensitizeAttribute = propertyInfo.GetCustomAttribute<DesensitizeAttribute>()!;
 
-        // 字符串直接脱敏
-        if (propertyInfo.PropertyType == typeof(string))
-        {
-            if (!propertyInfo.CanWrite) return;
-
-            var value = propertyInfo.GetValue(data) as string;
-            if (string.IsNullOrWhiteSpace(value)) return;
-            propertyInfo.SetValue(data, DesensitizeValue(value, desensitizeAttribute));
-        }
-        else
-        {
-            if (propertyInfo.PropertyType.IsClass)
-            {
-                
-            }
-            // TODO 特殊类型，要么是类，要么是集合
-        }
+        var value = propertyInfo.GetValue(data) as string;
+        if (string.IsNullOrWhiteSpace(value)) return;
+        propertyInfo.SetValue(data, DesensitizeValue(value, desensitizeAttribute));
     }
 
     private static string DesensitizeValue(string value, DesensitizeAttribute desensitizeAttribute)
