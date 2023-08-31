@@ -15,4 +15,6 @@
     <ProjectReference Include="..\BeniceSoft.Abp.Core\BeniceSoft.Abp.Core.csproj" />
   </ItemGroup>
 
+
+
 </Project>

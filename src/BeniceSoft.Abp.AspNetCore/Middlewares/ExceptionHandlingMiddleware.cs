@@ -41,9 +41,8 @@ public class ExceptionHandlingMiddleware : IMiddleware, ITransientDependency
                 throw new NoAuthorizationException();
             }
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            var exception = e.GetBaseException();
             _logger.LogError(new EventId(1, Guid.NewGuid().ToString()), exception.GetBaseException(),
                 exception.Message);
 
@@ -63,7 +62,7 @@ public class ExceptionHandlingMiddleware : IMiddleware, ITransientDependency
             }
 
             var result = WarpExceptionToJsonResult(exception);
-            await HandleResponseAsync(context, result, e.Message);
+            await HandleResponseAsync(context, result, exception.Message);
         }
     }
 
