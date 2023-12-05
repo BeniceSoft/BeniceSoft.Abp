@@ -8,7 +8,7 @@ namespace BeniceSoft.Abp.Sample.Application.Services;
 
 public class SampleAppService : ApplicationService
 {
-    // [OperationLog(OperationType = "Create", BizModule = "Sample")]
+    [OperationLog(OperationType = "Create", BizModule = "Sample")]
     public virtual async Task<CreateDto> CreateAsync(CreateDto dto, [IgnoreBind] OperationLogContext? context = null)
     {
         context?.SetValue(Guid.NewGuid().ToString(), "BizCode0001", "", new()

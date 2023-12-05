@@ -1,4 +1,5 @@
 using BeniceSoft.Abp.AspNetCore;
+using BeniceSoft.Abp.Idempotent.AspNetCore;
 using BeniceSoft.Abp.AspNetCore.Middlewares;
 using BeniceSoft.Abp.Auth;
 using BeniceSoft.Abp.Auth.Extensions;
@@ -13,19 +14,19 @@ using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.Auditing;
 using Volo.Abp.Autofac;
-using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Modularity;
 
 namespace BeniceSoft.Abp.Sample.Host;
 
 [DependsOn(
+    typeof(BeniceSoftAbpIdempotentAspNetCoreModule),
     typeof(BeniceSoftAbpAspNetCoreModule),
     // typeof(AbpEventBusRabbitMqModule),
     typeof(AbpAutofacModule),
     typeof(SampleApplicationModule),
     typeof(SampleEntityFrameworkCoreModule),
-    typeof(BeniceSoftAbpAuthModule),
-    typeof(BeniceSoftAbpOperationLoggingEventBusModule)
+    typeof(BeniceSoftAbpAuthModule)
+    // typeof(BeniceSoftAbpOperationLoggingEventBusModule)
 )]
 public class SampleHostModule : AbpModule
 {

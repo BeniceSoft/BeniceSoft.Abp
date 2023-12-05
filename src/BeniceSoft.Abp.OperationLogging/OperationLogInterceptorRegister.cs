@@ -16,7 +16,7 @@ public class OperationLogInterceptorRegister
 
     private static bool ShouldIntercept(Type type)
     {
-        // 是否是动态代理忽略的类型
+        // 是否是动态代理忽略的类型（默认中包含 controller 需注意）
         if (DynamicProxyIgnoreTypes.Contains(type))
         {
             return false;
