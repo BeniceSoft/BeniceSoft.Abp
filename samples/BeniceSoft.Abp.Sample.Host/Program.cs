@@ -28,7 +28,6 @@ public class Program
             var builder = WebApplication.CreateBuilder(args);
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             builder.Host
-                .UseAgileConfig(e => Log.Logger.Debug($"configs {e.Action}"))
                 .AddAppSettingsSecretsJson()
                 .UseAutofac()
                 .UseSerilog();

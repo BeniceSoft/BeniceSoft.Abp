@@ -11,7 +11,7 @@ public abstract class AuthAbstractionDbContext<TDbContext> : AbpDbContext<TDbCon
     {
     }
 
-    protected ICurrentUserPermissionAccessor UserPermissionAccessor
+    protected ICurrentUserPermissionAccessor? UserPermissionAccessor
         => LazyServiceProvider.LazyGetService<ICurrentUserPermissionAccessor>();
 
 
@@ -37,7 +37,7 @@ public abstract class AuthAbstractionDbContext<TDbContext> : AbpDbContext<TDbCon
             if (objectStateEntry.State == EntityState.Modified)
             {
                 var tableName = objectStateEntry.Metadata.GetTableName();
-                var currentColumnAuth = UserPermissionAccessor
+                var currentColumnAuth = UserPermissionAccessor?
                     .UserPermission?
                     .ColumnPermissions?
                     .Where(c => c.TableName == tableName)

@@ -10,7 +10,11 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-      <PackageReference Include="Volo.Abp.Http.Client" Version="7.0.1" />
+      <PackageReference Include="Volo.Abp.Http.Client" Version="8.1.0-rc.3" />
+      <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

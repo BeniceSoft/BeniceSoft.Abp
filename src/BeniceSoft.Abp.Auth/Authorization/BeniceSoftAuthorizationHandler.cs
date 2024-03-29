@@ -29,6 +29,7 @@ public class BeniceSoftAuthorizationHandler : AuthorizationHandler<BeniceSoftAut
         //     context.Fail();
         //     return Task.CompletedTask;
         // }
+        
 
         context.Succeed(requirement);
 

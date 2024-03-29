@@ -1,8 +1,8 @@
-using Dapper;
 using BeniceSoft.Abp.Ddd.Domain;
+using Dapper;
 using Microsoft.Extensions.Logging;
 
-namespace BeniceSoft.Abp.EntityFrameworkCore;
+namespace BeniceSoft.Abp.Dapper;
 
 public abstract class DapperSqlExecuter<TContext> : ISqlExecuter<TContext> where TContext : ISqlExecutionContext
 {
