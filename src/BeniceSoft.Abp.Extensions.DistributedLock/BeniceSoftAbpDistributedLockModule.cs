@@ -8,12 +8,12 @@ public class BeniceSoftAbpDistributedLockModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.OnRegistred(DistributedLockInterceptorRegistrar.RegisterIfNeeded);
+        context.Services.OnRegistered(DistributedLockInterceptorRegistrar.RegisterIfNeeded);
     }
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        var section = context.Services.GetConfiguration().GetSection("UfxDistributedLock");
+        var section = context.Services.GetConfiguration().GetSection("BeniceSoft:DistributedLock");
         context.Services.Configure<DistributedLockOptions>(section);
     }
 }

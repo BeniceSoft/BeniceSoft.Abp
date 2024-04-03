@@ -1,27 +1,31 @@
 <Project>
-  <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-    <Version>0.0.31-dev</Version>
-    <NoWarn>$(NoWarn);CS1591;CS0436</NoWarn>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <Version>8.1.0-rc.3.1</Version>
+        <NoWarn>$(NoWarn);CS1591;CS0436</NoWarn>
+        <Authors>Ender</Authors>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/BeniceSoft/Abp</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/BeniceSoft/Abp</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-    <!-- Include symbol files (*.pdb) in the built .nupkg -->
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.0-beta-20204-02">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+        <!-- Include symbol files (*.pdb) in the built .nupkg -->
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.0-beta-20204-02">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Content Remove="*.abppkg.json"/>
-    <None Include="*.abppkg.json">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <Content Remove="*.abppkg.json"/>
+        <None Include="*.abppkg.json">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
 
 </Project>

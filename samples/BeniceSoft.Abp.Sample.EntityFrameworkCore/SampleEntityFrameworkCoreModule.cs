@@ -1,5 +1,6 @@
 using BeniceSoft.Abp.EntityFrameworkCore;
 using BeniceSoft.Abp.Sample.Domain;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Modularity;
 
 namespace BeniceSoft.Abp.Sample.EntityFrameworkCore;
@@ -10,4 +11,9 @@ namespace BeniceSoft.Abp.Sample.EntityFrameworkCore;
 )]
 public class SampleEntityFrameworkCoreModule : AbpModule
 {
+    public override void ConfigureServices(ServiceConfigurationContext context)
+    {
+        context.Services.AddAbpDbContext<SampleDbContext>(builder => { builder.AddDefaultRepositories(); });
+        context.Services.AddEntityTableNameResolver<SampleDbContext>();
+    }
 }

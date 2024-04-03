@@ -13,7 +13,7 @@ public class BeniceSoftAbpCachingModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.OnRegistred(CacheableInterceptorRegistrar.RegisterIfNeeded);
+        context.Services.OnRegistered(CacheableInterceptorRegistrar.RegisterIfNeeded);
 
         context.Services.GetConfiguration().GetSection("BeniceSoft:Caching").Bind(BeniceSoftCachingConfiguration.Instance);
     }

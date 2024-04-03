@@ -2,15 +2,19 @@
     <Import Project="..\..\common.props" />
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="RedLock.net" Version="2.3.2-pre1" />
-        <PackageReference Include="SmartFormat" Version="3.0.0" />
-        <PackageReference Include="Volo.Abp.Core" Version="7.0.1" />
+        <PackageReference Include="RedLock.net" Version="2.3.2" />
+        <PackageReference Include="SmartFormat" Version="3.3.2" />
+        <PackageReference Include="Volo.Abp.Core" Version="8.1.0-rc.3" />
+        <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

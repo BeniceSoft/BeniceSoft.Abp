@@ -1,7 +1,12 @@
 #!/bin/bash
 
 source='https://api.nuget.org/v3/index.json'
-api_key='API-KEY'
+api_key=$1
+
+if [ -z $api_key ]; then
+    echo "Error: 请输入有效的 api key"
+    exit 1
+fi
 
 dotnet pack ../BeniceSoft.Abp.sln -o .
 
@@ -12,7 +17,7 @@ do
   if [[ $file != '.' && $file != '..' && "${file##*.}"x = "nupkg"x ]]
   then
     echo "push nuget package ${file}"
-    
+
     dotnet nuget push $file -s $source --api-key $api_key
     echo "package ${file} pushed!"
 

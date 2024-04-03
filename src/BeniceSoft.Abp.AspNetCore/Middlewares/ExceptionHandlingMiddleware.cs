@@ -12,6 +12,7 @@ using BeniceSoft.Abp.Core.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
@@ -25,10 +26,12 @@ namespace BeniceSoft.Abp.AspNetCore.Middlewares;
 public class ExceptionHandlingMiddleware : IMiddleware, ITransientDependency
 {
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+    private readonly IHostEnvironment _env;
 
-    public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
+    public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger, IHostEnvironment env)
     {
         _logger = logger;
+        _env = env;
     }
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -62,6 +65,10 @@ public class ExceptionHandlingMiddleware : IMiddleware, ITransientDependency
             }
 
             var result = WarpExceptionToJsonResult(exception);
+            if (_env.IsDevelopment())
+            {
+                result.Exception = exception.Message;
+            }
             await HandleResponseAsync(context, result, exception.Message);
         }
     }

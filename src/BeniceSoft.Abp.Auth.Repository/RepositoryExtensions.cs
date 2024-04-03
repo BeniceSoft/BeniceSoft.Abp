@@ -11,11 +11,18 @@ namespace BeniceSoft.Abp.Auth.Repository;
 
 public static class RepositoryExtensions
 {
-    public static async Task<IQueryable<TEntity>> GetAuthQueryableAsync<TEntity>(this IRepository<TEntity> repository,
+    public static async Task<IQueryable<TEntity>> GetAuthFilteredQueryableAsync<TEntity>(this IRepository<TEntity> repository,
         IUserPermission? userPermission, string tableName)
         where TEntity : class, IEntity
     {
         var queryable = await repository.GetQueryableAsync();
+        return GetAuthFilteredQueryable(queryable, userPermission, tableName);
+    }
+
+    public static IQueryable<TEntity> GetAuthFilteredQueryable<TEntity>(this IQueryable<TEntity> queryable,
+        IUserPermission? userPermission, string tableName)
+        where TEntity : class, IEntity
+    {
         var data = userPermission?
             .RowPermissions?
             .Where(c => c.TableName == tableName)
@@ -25,21 +32,6 @@ public static class RepositoryExtensions
             return queryable;
         }
 
-        var exp = GenerateExp<TEntity>(data, tableName, userPermission?.UserId);
-        return queryable.Where(exp);
-    }
-
-    public static async Task<IQueryable<TEntity>> GetAuthQueryableAsync<TEntity>(this IQueryable<TEntity> queryable,
-        IUserPermission? userPermission, string tableName)
-        where TEntity : class, IEntity
-    {
-        var data = userPermission?.RowPermissions?.Where(c => c.TableName == tableName).ToList();
-        if (!(data?.Any() ?? false))
-        {
-            return queryable;
-        }
-
-        await Task.Delay(1);
         var exp = GenerateExp<TEntity>(data, tableName, userPermission?.UserId);
         return queryable.Where(exp);
     }

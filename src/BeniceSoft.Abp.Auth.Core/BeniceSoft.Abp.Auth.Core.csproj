@@ -8,9 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="OpenIddict.Abstractions" Version="4.0.0" />
-      <PackageReference Include="Volo.Abp.Core" Version="7.0.1" />
-      <PackageReference Include="Volo.Abp.Security" Version="7.0.1" />
+      <PackageReference Include="OpenIddict.Abstractions" Version="5.4.0" />
+      <PackageReference Include="Volo.Abp.Core" Version="8.1.0-rc.3" />
+      <PackageReference Include="Volo.Abp.Security" Version="8.1.0-rc.3" />
+      <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

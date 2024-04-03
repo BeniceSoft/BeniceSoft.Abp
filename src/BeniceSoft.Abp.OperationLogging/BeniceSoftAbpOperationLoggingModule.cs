@@ -7,6 +7,6 @@ public class BeniceSoftAbpOperationLoggingModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.OnRegistred(OperationLogInterceptorRegister.RegisterIfNeeded);
+        context.Services.OnRegistered(OperationLogInterceptorRegister.RegisterIfNeeded);
     }
 }

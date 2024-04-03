@@ -8,4 +8,11 @@
         <LangVersion>default</LangVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
 </Project>
