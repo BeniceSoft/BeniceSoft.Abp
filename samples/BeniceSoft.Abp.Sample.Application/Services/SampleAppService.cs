@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using BeniceSoft.Abp.Core.Attributes;
 using BeniceSoft.Abp.OperationLogging.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -28,6 +29,7 @@ public class SampleAppService : ApplicationService
         };
     }
 
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public PagedResultDto<TestModel> Page()
     {
         return new(10, new List<TestModel>

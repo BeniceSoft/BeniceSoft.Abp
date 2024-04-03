@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using BeniceSoft.Abp.Auth.Authentication;
 using BeniceSoft.Abp.Auth.Authorization;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BeniceSoft.Abp.Auth.Extensions;
@@ -35,9 +37,9 @@ public static class ServiceCollectionExtensions
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false,
-                        // ValidateIssuer = false,
                         RequireExpirationTime = true,
-                        RequireAudience = false
+                        RequireAudience = false,
+                        SignatureValidator = (token, _) => new JsonWebToken(token)
                     };
                     options.Events = new JwtBearerEvents()
                     {

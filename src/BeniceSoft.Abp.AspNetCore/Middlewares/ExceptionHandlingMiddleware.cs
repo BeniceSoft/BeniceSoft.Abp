@@ -39,10 +39,10 @@ public class ExceptionHandlingMiddleware : IMiddleware, ITransientDependency
         try
         {
             await next(context);
-            if (context.Response.StatusCode == 401)
-            {
-                throw new NoAuthorizationException();
-            }
+            // if (context.Response.StatusCode == 401)
+            // {
+            //     throw new NoAuthorizationException();
+            // }
         }
         catch (Exception exception)
         {

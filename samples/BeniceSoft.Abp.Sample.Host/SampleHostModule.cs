@@ -58,7 +58,7 @@ public class SampleHostModule : AbpModule
         });
 
         context.Services.AddBeniceSoftAuthentication();
-        // context.Services.AddBeniceSoftAuthorization();
+        context.Services.AddBeniceSoftAuthorization();
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -81,7 +81,7 @@ public class SampleHostModule : AbpModule
         app.UseBeniceSoftAuthentication();
 
         // 认证授权
-        // app.UseBeniceSoftAuthorization();
+        app.UseBeniceSoftAuthorization();
 
         // 用户权限
         // app.UseBeniceSoftUserPermission();
