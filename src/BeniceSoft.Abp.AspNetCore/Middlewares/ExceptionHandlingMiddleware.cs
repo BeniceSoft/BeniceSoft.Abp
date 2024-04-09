@@ -64,11 +64,7 @@ public class ExceptionHandlingMiddleware : IMiddleware, ITransientDependency
                 return;
             }
 
-            var result = WarpExceptionToJsonResult(exception);
-            if (_env.IsDevelopment())
-            {
-                result.Exception = exception.Message;
-            }
+            var result = WarpExceptionToJsonResult(exception, _env.IsDevelopment());
             await HandleResponseAsync(context, result, exception.Message);
         }
     }
@@ -99,9 +95,14 @@ public class ExceptionHandlingMiddleware : IMiddleware, ITransientDependency
         await context.Response.Body.FlushAsync();
     }
 
-    private static ResponseResult WarpExceptionToJsonResult(Exception exception)
+    private static ResponseResult WarpExceptionToJsonResult(Exception exception, bool isDevelopment)
     {
-        return exception switch
+        if (exception is IKnownException knownException)
+        {
+            return new ResponseResult(knownException.ErrorCode, knownException.Message, knownException.ErrorData);
+        }
+
+        ResponseResult exceptionResult = exception switch
         {
             UserFriendlyException userFriendlyException => new(HttpStatusCode.BadRequest,
                 userFriendlyException.Message),
@@ -115,6 +116,12 @@ public class ExceptionHandlingMiddleware : IMiddleware, ITransientDependency
                 $"远程服务不可用({remoteCallException.HttpStatusCode})"),
             _ => new(HttpStatusCode.InternalServerError, "系统出现不可预期的错误")
         };
+        if (isDevelopment)
+        {
+            exceptionResult.ExceptionData = exception.Message;
+        }
+
+        return exceptionResult;
     }
 }
 

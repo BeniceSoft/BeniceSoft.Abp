@@ -17,7 +17,7 @@ public class ResponseResult
     /// </summary>
     public string Message { get; set; } = string.Empty;
 
-    public string? Exception { get; set; }
+    public object? ExceptionData { get; set; }
 
     /// <summary>
     /// 构造方法
@@ -31,12 +31,12 @@ public class ResponseResult
     /// </summary>
     /// <param name="code"></param>
     /// <param name="message"></param>
-    /// <param name="exception"></param>
-    public ResponseResult(int code, string message, string? exception = null)
+    /// <param name="exceptionData"></param>
+    public ResponseResult(int code, string message, object? exceptionData = null)
     {
         Code = code;
         Message = message;
-        Exception = exception;
+        ExceptionData = exceptionData;
     }
 
     /// <summary>

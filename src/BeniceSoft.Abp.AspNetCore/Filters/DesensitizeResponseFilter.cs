@@ -38,6 +38,9 @@ public class DesensitizeResponseFilter : IActionFilter, ITransientDependency
         // data is IEnumerable<T>
         if (dataType.IsAssignableTo(typeof(IEnumerable)) && dataType.IsGenericType)
         {
+            // skip IEnumerable<string>
+            if (dataType.GetGenericArguments()[0] == typeof(string)) return data;
+            
             foreach (var item in (IEnumerable)data)
             {
                 Desensitize(item);
