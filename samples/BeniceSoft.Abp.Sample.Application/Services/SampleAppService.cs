@@ -8,6 +8,7 @@ using Volo.Abp.Application.Services;
 
 namespace BeniceSoft.Abp.Sample.Application.Services;
 
+[DesensitizeResponse]
 public class SampleAppService : ApplicationService
 {
     public void Exception()

@@ -25,11 +25,6 @@ public class BeniceSoftAbpAspNetCoreModule : AbpModule
             {
                 options.Filters.Remove(filterMetadata);
             }
-
-            // 统一响应格式化
-            options.Filters.Add<JsonFormatResponseFilter>();
-            // 相应数据脱敏
-            options.Filters.Add<DesensitizeResponseFilter>();
         });
 
         Configure<BeniceSoftCultureMapOptions>(options =>

@@ -3,7 +3,6 @@ using BeniceSoft.Abp.Idempotent.AspNetCore;
 using BeniceSoft.Abp.AspNetCore.Middlewares;
 using BeniceSoft.Abp.Auth;
 using BeniceSoft.Abp.Auth.Extensions;
-using BeniceSoft.Abp.OperationLogging.EventBus;
 using BeniceSoft.Abp.Sample.Application;
 using BeniceSoft.Abp.Sample.EntityFrameworkCore;
 using Microsoft.Extensions.PlatformAbstractions;
@@ -56,6 +55,9 @@ public class SampleHostModule : AbpModule
             options.TokenCookie.Expiration = TimeSpan.Zero;
             options.AutoValidate = false; //表示不验证防伪令牌
         });
+
+        context.Services.AddJsonFormatResponse();
+        context.Services.AddDesensitizeResponse();
 
         context.Services.AddBeniceSoftAuthentication();
         context.Services.AddBeniceSoftAuthorization();
