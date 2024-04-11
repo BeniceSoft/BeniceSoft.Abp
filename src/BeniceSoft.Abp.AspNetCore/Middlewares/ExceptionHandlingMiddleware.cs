@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using BeniceSoft.Abp.Core.Constants;
 using BeniceSoft.Abp.Core.Exceptions;
@@ -107,6 +108,7 @@ public class ExceptionHandlingMiddleware : ITransientDependency
 public class ExceptionHandlingOptions
 {
     public HttpStatusCode KnownExceptionStatusCode { get; set; }
+    public HttpStatusCode DefaultUnknownExceptionStatusCode { get; set; }
 
     public Func<Exception, HttpStatusCode> DetermineUnknownExceptionStatusCode { get; set; }
     public Func<Exception, ResponseResult> DetermineUnknownExceptionResponseResult { get; set; }
@@ -114,17 +116,14 @@ public class ExceptionHandlingOptions
     public ExceptionHandlingOptions()
     {
         KnownExceptionStatusCode = HttpStatusCode.OK;
+        DefaultUnknownExceptionStatusCode = HttpStatusCode.InternalServerError;
 
-        DetermineUnknownExceptionStatusCode = exception => exception switch
-        {
-            NoAuthorizationException => HttpStatusCode.Unauthorized,
-            _ => HttpStatusCode.InternalServerError
-        };
+        DetermineUnknownExceptionStatusCode = _ => DefaultUnknownExceptionStatusCode;
         DetermineUnknownExceptionResponseResult = exception => exception switch
         {
-            NoAuthorizationException => new ResponseResult(HttpStatusCode.Unauthorized, "Unauthorized"),
+            UnauthorizedException unauthorizedException => new ResponseResult(HttpStatusCode.Unauthorized, unauthorizedException.Message),
             UserFriendlyException userFriendlyException => new ResponseResult(HttpStatusCode.BadRequest, userFriendlyException.Message),
-            _ => new ResponseResult((int)HttpStatusCode.InternalServerError, "Internal server error")
+            _ => new ResponseResult((int)DefaultUnknownExceptionStatusCode, "Internal server error")
         };
     }
 }

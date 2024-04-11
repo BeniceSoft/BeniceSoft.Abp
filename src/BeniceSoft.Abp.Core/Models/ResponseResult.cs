@@ -68,14 +68,14 @@ public class ResponseResult<T> : ResponseResult
     /// 构造方法
     /// </summary>
     /// <param name="td"></param>
-    public ResponseResult(T td) => Data = td;
+    public ResponseResult(T td) : this(200, "Success") => Data = td;
 
     /// <summary>
     /// 构造方法
     /// </summary>
     /// <param name="code"></param>
     /// <param name="message"></param>
-    public ResponseResult(int code, string message)
+    public ResponseResult(int code, string message) : base(code, message, null)
     {
         Code = code;
         Message = message;

@@ -25,10 +25,7 @@ public class JsonFormatResponseFilter : IActionFilter, ITransientDependency
                            .GetMethodInfo()
                            .GetCustomAttribute<IgnoreJsonFormatAttribute>() is not null ||
                        context.HttpContext.Request.Headers.ContainsKey(BeniceSoftHttpConstant.IgnoreJsonFormat);
-        if (isIgnore)
-        {
-            return;
-        }
+        if (isIgnore) return;
 
         var actionResult = context.Result;
         if (actionResult is ObjectResult objectResult)
