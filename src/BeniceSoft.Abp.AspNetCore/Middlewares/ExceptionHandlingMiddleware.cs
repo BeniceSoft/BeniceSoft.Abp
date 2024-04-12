@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Security.Authentication;
 using System.Threading.Tasks;
 using BeniceSoft.Abp.Core.Constants;
 using BeniceSoft.Abp.Core.Exceptions;
@@ -14,7 +13,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.ExceptionHandling;
 using Volo.Abp.Http;
+using Volo.Abp.Logging;
 
 namespace BeniceSoft.Abp.AspNetCore.Middlewares;
 
@@ -42,8 +43,13 @@ public class ExceptionHandlingMiddleware : ITransientDependency
         }
         catch (Exception exception)
         {
-            _logger.LogError(new EventId(1, Guid.NewGuid().ToString()), exception.GetBaseException(),
-                exception.Message);
+            var defaultLogLevel = LogLevel.Error;
+            if (exception is IHasLogLevel logLevel)
+            {
+                defaultLogLevel = logLevel.LogLevel;
+            }
+
+            _logger.Log(defaultLogLevel, new EventId(1, Guid.NewGuid().ToString()), exception.GetBaseException(), exception.Message);
 
             // 来自远程服务调用的请求
             if (context.Request.Headers.TryGetValue(BeniceSoftHttpConstant.RequestedFrom, out var requestedFrom) &&
@@ -61,15 +67,19 @@ public class ExceptionHandlingMiddleware : ITransientDependency
             }
 
             ResponseResult result;
-            HttpStatusCode statusCode;
+            int statusCode = (int)HttpStatusCode.OK;
+            if (exception is IHasHttpStatusCode httpStatusCode)
+            {
+                statusCode = httpStatusCode.HttpStatusCode;
+            }
+
             if (exception is IKnownException knownException)
             {
-                statusCode = _options.KnownExceptionStatusCode;
                 result = new ResponseResult(knownException.ErrorCode, knownException.Message, knownException.ErrorData);
             }
             else
             {
-                statusCode = _options.DetermineUnknownExceptionStatusCode(exception);
+                statusCode = (int)_options.DetermineUnknownExceptionStatusCode(exception);
                 result = _options.DetermineUnknownExceptionResponseResult(exception);
             }
 
@@ -94,9 +104,9 @@ public class ExceptionHandlingMiddleware : ITransientDependency
         await context.Response.Body.FlushAsync();
     }
 
-    private static async Task HandleResponseAsync(HttpContext context, HttpStatusCode statusCode, ResponseResult result, string errorMessage)
+    private static async Task HandleResponseAsync(HttpContext context, int statusCode, ResponseResult result, string errorMessage)
     {
-        context.Response.StatusCode = (int)statusCode;
+        context.Response.StatusCode = statusCode;
         context.Response.ContentType = "application/json;charset=utf-8";
         const string defaultResponseJsonString = "{\"code\": 500, \"message\": \"Internal server error\"}";
         await context.Response.WriteAsync(result.ToJson(true) ?? defaultResponseJsonString)
@@ -107,7 +117,6 @@ public class ExceptionHandlingMiddleware : ITransientDependency
 
 public class ExceptionHandlingOptions
 {
-    public HttpStatusCode KnownExceptionStatusCode { get; set; }
     public HttpStatusCode DefaultUnknownExceptionStatusCode { get; set; }
 
     public Func<Exception, HttpStatusCode> DetermineUnknownExceptionStatusCode { get; set; }
@@ -115,7 +124,6 @@ public class ExceptionHandlingOptions
 
     public ExceptionHandlingOptions()
     {
-        KnownExceptionStatusCode = HttpStatusCode.OK;
         DefaultUnknownExceptionStatusCode = HttpStatusCode.InternalServerError;
 
         DetermineUnknownExceptionStatusCode = _ => DefaultUnknownExceptionStatusCode;

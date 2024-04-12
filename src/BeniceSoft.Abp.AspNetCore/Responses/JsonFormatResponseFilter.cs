@@ -27,14 +27,16 @@ public class JsonFormatResponseFilter : IActionFilter, ITransientDependency
                        context.HttpContext.Request.Headers.ContainsKey(BeniceSoftHttpConstant.IgnoreJsonFormat);
         if (isIgnore) return;
 
-        var actionResult = context.Result;
-        if (actionResult is ObjectResult objectResult)
+        var wrappedResult = context.Result switch
         {
-            context.Result = WarpMyJsonResult(objectResult.Value);
-        }
-        else if (actionResult is EmptyResult)
+            ObjectResult objectResult => WarpMyJsonResult(objectResult.Value),
+            StatusCodeResult statusCodeResult => WarpMyJsonResult(new ResponseResult(statusCodeResult.StatusCode, string.Empty)),
+            EmptyResult => WarpMyJsonResult(new ResponseResult()),
+            _ => null
+        };
+        if (wrappedResult is not null)
         {
-            context.Result = WarpMyJsonResult(new ResponseResult());
+            context.Result = wrappedResult;
         }
     }
 
