@@ -12,14 +12,13 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Volo.Abp;
-using Volo.Abp.DependencyInjection;
 using Volo.Abp.ExceptionHandling;
 using Volo.Abp.Http;
 using Volo.Abp.Logging;
 
 namespace BeniceSoft.Abp.AspNetCore.Middlewares;
 
-public class ExceptionHandlingMiddleware : ITransientDependency
+public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
