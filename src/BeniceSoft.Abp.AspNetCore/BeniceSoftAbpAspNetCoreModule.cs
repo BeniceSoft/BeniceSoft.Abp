@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using BeniceSoft.Abp.AspNetCore.Filters;
 using BeniceSoft.Abp.AspNetCore.Localizations;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;

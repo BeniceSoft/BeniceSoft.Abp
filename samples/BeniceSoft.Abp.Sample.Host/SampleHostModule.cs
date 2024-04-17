@@ -1,12 +1,15 @@
 using BeniceSoft.Abp.AspNetCore;
 using BeniceSoft.Abp.Idempotent.AspNetCore;
 using BeniceSoft.Abp.AspNetCore.Middlewares;
-using BeniceSoft.Abp.Auth;
-using BeniceSoft.Abp.Auth.Extensions;
+using BeniceSoft.Abp.Authorization.OpenAuthing;
+using BeniceSoft.Abp.DynamicPermission;
 using BeniceSoft.Abp.Sample.Application;
 using BeniceSoft.Abp.Sample.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
@@ -20,11 +23,12 @@ namespace BeniceSoft.Abp.Sample.Host;
 [DependsOn(
     typeof(BeniceSoftAbpIdempotentAspNetCoreModule),
     typeof(BeniceSoftAbpAspNetCoreModule),
+    typeof(BeniceSoftAbpDynamicPermissionModule),
+    typeof(BeniceSoftAbpAuthorizationOpenAuthingModule),
     // typeof(AbpEventBusRabbitMqModule),
     typeof(AbpAutofacModule),
     typeof(SampleApplicationModule),
-    typeof(SampleEntityFrameworkCoreModule),
-    typeof(BeniceSoftAbpAuthModule)
+    typeof(SampleEntityFrameworkCoreModule)
     // typeof(BeniceSoftAbpOperationLoggingEventBusModule)
 )]
 public class SampleHostModule : AbpModule
@@ -59,8 +63,26 @@ public class SampleHostModule : AbpModule
         context.Services.AddJsonFormatResponse();
         context.Services.AddDesensitizeResponse();
 
-        context.Services.AddBeniceSoftAuthentication();
-        context.Services.AddBeniceSoftAuthorization();
+        context.Services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, x =>
+        {
+            x.IncludeErrorDetails = true;
+            x.RequireHttpsMetadata = false;
+            x.UseSecurityTokenValidators = false;
+            x.Authority = "http://localhost:5129/";
+            x.Audience = "OpenAuthing";
+            x.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuers = ["http://localhost:5129/"],
+                ValidAudiences = ["OpenAuthing"],
+                RequireExpirationTime = true,
+                SignatureValidator = (token, _) => new JsonWebToken(token)
+            };
+        });
+        context.Services.AddAuthorization();
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -79,14 +101,8 @@ public class SampleHostModule : AbpModule
 
         app.UseAbpRequestLocalization();
 
-        // 身份验证
-        app.UseBeniceSoftAuthentication();
-
-        // 认证授权
-        app.UseBeniceSoftAuthorization();
-
-        // 用户权限
-        // app.UseBeniceSoftUserPermission();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseAuditing();
         app.UseSwagger();

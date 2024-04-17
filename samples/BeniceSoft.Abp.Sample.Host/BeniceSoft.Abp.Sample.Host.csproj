@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AgileConfig.Client" Version="1.6.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.1-dev-00295" />
@@ -17,9 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\BeniceSoft.Abp.Authorization.OpenAuthing\BeniceSoft.Abp.Authorization.OpenAuthing.csproj" />
+    <ProjectReference Include="..\..\src\BeniceSoft.Abp.DynamicPermission\BeniceSoft.Abp.DynamicPermission.csproj" />
     <ProjectReference Include="..\..\src\BeniceSoft.Abp.Idempotent.AspNetCore\BeniceSoft.Abp.Idempotent.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\BeniceSoft.Abp.AspNetCore\BeniceSoft.Abp.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\src\BeniceSoft.Abp.Auth\BeniceSoft.Abp.Auth.csproj" />
     <ProjectReference Include="..\..\src\BeniceSoft.Abp.OperationLogging.EventBus\BeniceSoft.Abp.OperationLogging.EventBus.csproj" />
     <ProjectReference Include="..\BeniceSoft.Abp.Sample.Application\BeniceSoft.Abp.Sample.Application.csproj" />
     <ProjectReference Include="..\BeniceSoft.Abp.Sample.EntityFrameworkCore\BeniceSoft.Abp.Sample.EntityFrameworkCore.csproj" />

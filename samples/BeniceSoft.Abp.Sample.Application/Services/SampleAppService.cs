@@ -8,7 +8,7 @@ using Volo.Abp.Application.Services;
 
 namespace BeniceSoft.Abp.Sample.Application.Services;
 
-[DesensitizeResponse]
+[Authorize, DesensitizeResponse]
 public class SampleAppService : ApplicationService
 {
     public void Exception()
@@ -16,7 +16,7 @@ public class SampleAppService : ApplicationService
         throw new BizException(999, "this is biz exception");
     }
 
-    [OperationLog(OperationType = "Create", BizModule = "Sample")]
+    [Authorize("sample.create"), OperationLog(OperationType = "Create", BizModule = "Sample")]
     public virtual async Task<CreateDto> CreateAsync(CreateDto dto, [IgnoreBind] OperationLogContext? context = null)
     {
         context?.SetValue(Guid.NewGuid().ToString(), "BizCode0001", "", new()
