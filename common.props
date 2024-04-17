@@ -1,7 +1,7 @@
 <Project>
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
-        <Version>8.1.0-rc.3.2</Version>
+        <Version>8.1.1-dev.2024041501</Version>
         <NoWarn>$(NoWarn);CS1591;CS0436</NoWarn>
         <Authors>Ender</Authors>
         <RepositoryType>git</RepositoryType>

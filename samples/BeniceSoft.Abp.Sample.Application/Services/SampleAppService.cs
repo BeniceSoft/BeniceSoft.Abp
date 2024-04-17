@@ -1,14 +1,21 @@
 using System.ComponentModel.DataAnnotations;
 using BeniceSoft.Abp.Core.Attributes;
 using BeniceSoft.Abp.OperationLogging.Abstractions;
+using BeniceSoft.Abp.Sample.Domain.Shared.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace BeniceSoft.Abp.Sample.Application.Services;
 
+[DesensitizeResponse]
 public class SampleAppService : ApplicationService
 {
+    public void Exception()
+    {
+        throw new BizException(999, "this is biz exception");
+    }
+
     [OperationLog(OperationType = "Create", BizModule = "Sample")]
     public virtual async Task<CreateDto> CreateAsync(CreateDto dto, [IgnoreBind] OperationLogContext? context = null)
     {
@@ -18,6 +25,11 @@ public class SampleAppService : ApplicationService
         });
 
         return dto;
+    }
+
+    public IEnumerable<string> GetStrings()
+    {
+        return Enumerable.Range(1, 100).Select(x => x.ToString());
     }
 
     public List<TestModel> List()

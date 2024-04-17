@@ -17,7 +17,7 @@ public class ResponseResult
     /// </summary>
     public string Message { get; set; } = string.Empty;
 
-    public string? Exception { get; set; }
+    public object? ExceptionData { get; set; }
 
     /// <summary>
     /// 构造方法
@@ -31,12 +31,12 @@ public class ResponseResult
     /// </summary>
     /// <param name="code"></param>
     /// <param name="message"></param>
-    /// <param name="exception"></param>
-    public ResponseResult(int code, string message, string? exception = null)
+    /// <param name="exceptionData"></param>
+    public ResponseResult(int code, string message, object? exceptionData = null)
     {
         Code = code;
         Message = message;
-        Exception = exception;
+        ExceptionData = exceptionData;
     }
 
     /// <summary>
@@ -67,19 +67,29 @@ public class ResponseResult<T> : ResponseResult
     /// <summary>
     /// 构造方法
     /// </summary>
-    /// <param name="td"></param>
-    public ResponseResult(T td) => Data = td;
+    /// <param name="data"></param>
+    public ResponseResult(T data) : this(200, "Success", data)
+    {
+    }
 
     /// <summary>
     /// 构造方法
     /// </summary>
     /// <param name="code"></param>
     /// <param name="message"></param>
-    public ResponseResult(int code, string message)
+    public ResponseResult(int code, string message) : this(code, message, default!)
     {
-        Code = code;
-        Message = message;
-        Data = default!;
+    }
+
+    /// <summary>
+    /// 构造方法
+    /// </summary>
+    /// <param name="code"></param>
+    /// <param name="message"></param>
+    /// <param name="data"></param>
+    public ResponseResult(int code, string message, T data) : base(code, message, null)
+    {
+        Data = data;
     }
 
     /// <summary>
